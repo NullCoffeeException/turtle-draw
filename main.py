@@ -4,26 +4,7 @@ import turtle
 import colorsys
 import math
 import threading    # GUI 2개를 동시에 하기 위함
-
-
-# 1번. 꽃
-def draw_flower():
-    t = turtle.Turtle()
-    t.speed(0)
-    t.hideturtle()
-    hue = 0
-    
-    for _ in range(15):
-        for j in range(18):
-            c = colorsys.hsv_to_rgb(hue, 1, 1)
-            t.color(c)
-            hue += 0.005
-            t.right(90)
-            t.circle(150 - j * 6, 90)
-            t.left(90)
-            t.circle(150 - j * 6, 90)
-            t.right(180)
-        t.circle(40, 24)
+from PIL import Image
 
 
 # 2번. 만다라
@@ -88,7 +69,7 @@ def draw_rose_curve():
 
 
 # 선택된 그림 전역변수
-func = draw_mandara
+func = draw_rose_curve
 
 
 # turtle을 이용한 그리기 함수
@@ -140,7 +121,40 @@ bottom_frame.grid(row=1, column=0, sticky="nsew")
 
 
 # top_frame 레이아웃
+top_frame.columnconfigure(0, weight=1)
+top_frame.columnconfigure(1, weight=1)
+top_frame.columnconfigure(2, weight=1)
+top_frame.columnconfigure(3, weight=1)
+top_frame.rowconfigure(0, weight=1)
+top_frame.rowconfigure(1, weight=1)
 
+# 만다라 버튼
+def click_mandara():
+    global func
+    func = draw_mandara
+
+img_mandara = ctk.CTkImage(light_image=Image.open("./img/mandara.png"), size=(150, 150))
+btn_mandara = ctk.CTkButton(top_frame, image=img_mandara, text="", command=click_mandara)
+btn_mandara.grid(row=0, column=0)
+
+
+# 스파이럴 플라워 버튼
+def click_spiral_flower():
+    global func
+    func = draw_spiral_flower
+
+img_spiral_flower = ctk.CTkImage(light_image=Image.open("./img/spiral_flower.png"), size=(150, 150))
+btn_spiral_flower = ctk.CTkButton(top_frame, image=img_spiral_flower, text="", command=click_spiral_flower)
+btn_spiral_flower.grid(row=0, column=1)
+
+
+def click_rose_curve():
+    global func
+    func = draw_rose_curve
+
+img_rose_curve = ctk.CTkImage(light_image=Image.open("./img/rose_curve.png"), size=(150, 150))
+btn_rose_curve = ctk.CTkButton(top_frame, image=img_rose_curve, text="", command=click_rose_curve)
+btn_rose_curve.grid(row=0, column=2)
 
 
 

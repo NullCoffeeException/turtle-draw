@@ -7,7 +7,7 @@ import threading    # GUI 2개를 동시에 하기 위함
 from PIL import Image
 
 
-# 2번. 만다라
+# 1번. 만다라
 def draw_mandara():
     t = turtle.Turtle()
     t.speed(0)
@@ -25,7 +25,7 @@ def draw_mandara():
         hue += 1 / n
 
 
-# 3번. 스파이럴 플라워
+# 2번. 스파이럴 플라워
 def draw_spiral_flower():
     t = turtle.Turtle()
     t.speed(0)
@@ -41,7 +41,7 @@ def draw_spiral_flower():
         hue += 1 / 60
 
 
-# 4번. 장미 곡선
+# 3번. 장미 곡선
 def draw_rose_curve():
     t = turtle.Turtle()
     t.speed(0)
@@ -66,10 +66,23 @@ def draw_rose_curve():
         hue += 1 / 180
 
 
+# 4번. 원 중첩
+def draw_circle_overlap():
+    t = turtle.Turtle()
+    t.speed(0)
+    t.hideturtle()
+    hue = 0
+
+    for i in range(80):
+        c = colorsys.hsv_to_rgb(hue, 1, 1)
+        t.color(c)
+        t.circle(100 - i)
+        t.left(45)
+        hue += 1 / 100
 
 
 # 선택된 그림 전역변수
-func = draw_rose_curve
+func = draw_mandara
 
 
 # turtle을 이용한 그리기 함수
@@ -103,14 +116,14 @@ ctk.set_default_color_theme("blue")
 # 창 설정
 root = ctk.CTk()
 root.title("Turtle Draw")
-root.geometry("1000x600+200+100")
+root.geometry("1000x500+200+200")
 
 
 
 # grid
 root.columnconfigure(0, weight=1)
-root.rowconfigure(0, weight=8, minsize=700)
-root.rowconfigure(1, weight=1, minsize=100)
+root.rowconfigure(0, weight=7, minsize=420)
+root.rowconfigure(1, weight=1, minsize=60)
 
 # 레이아웃
 top_frame = ctk.CTkFrame(root)
@@ -126,14 +139,16 @@ top_frame.columnconfigure(1, weight=1)
 top_frame.columnconfigure(2, weight=1)
 top_frame.columnconfigure(3, weight=1)
 top_frame.rowconfigure(0, weight=1)
-top_frame.rowconfigure(1, weight=1)
+
+
+IMG_SIZE = 200
 
 # 만다라 버튼
 def click_mandara():
     global func
     func = draw_mandara
 
-img_mandara = ctk.CTkImage(light_image=Image.open("./img/mandara.png"), size=(150, 150))
+img_mandara = ctk.CTkImage(light_image=Image.open("./img/mandara.png"), size=(IMG_SIZE, IMG_SIZE))
 btn_mandara = ctk.CTkButton(top_frame, image=img_mandara, text="", command=click_mandara)
 btn_mandara.grid(row=0, column=0)
 
@@ -143,25 +158,33 @@ def click_spiral_flower():
     global func
     func = draw_spiral_flower
 
-img_spiral_flower = ctk.CTkImage(light_image=Image.open("./img/spiral_flower.png"), size=(150, 150))
+img_spiral_flower = ctk.CTkImage(light_image=Image.open("./img/spiral_flower.png"), size=(IMG_SIZE, IMG_SIZE))
 btn_spiral_flower = ctk.CTkButton(top_frame, image=img_spiral_flower, text="", command=click_spiral_flower)
 btn_spiral_flower.grid(row=0, column=1)
 
 
+# 장미 곡선 버튼
 def click_rose_curve():
     global func
     func = draw_rose_curve
 
-img_rose_curve = ctk.CTkImage(light_image=Image.open("./img/rose_curve.png"), size=(150, 150))
+img_rose_curve = ctk.CTkImage(light_image=Image.open("./img/rose_curve.png"), size=(IMG_SIZE, IMG_SIZE))
 btn_rose_curve = ctk.CTkButton(top_frame, image=img_rose_curve, text="", command=click_rose_curve)
 btn_rose_curve.grid(row=0, column=2)
 
 
+# 원 중첩 버튼
+def click_circle_overlap():
+    global func
+    func = draw_circle_overlap
+
+img_wolf = ctk.CTkImage(light_image=Image.open('./img/circle_overlap.png'), size=(IMG_SIZE, IMG_SIZE))
+btn_wolf = ctk.CTkButton(top_frame, image=img_wolf, text="", command=click_circle_overlap)
+btn_wolf.grid(row=0, column=3)
 
 # bottom_frame 레이아웃
 btn_run = ctk.CTkButton(bottom_frame, text="실행", command=turtle_draw, width=150, height=40, font=("Arial", 18))
-btn_run.pack(pady=20)
-
+btn_run.pack(pady=30)
 
 
 root.mainloop()
